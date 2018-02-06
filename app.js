@@ -30,7 +30,6 @@ app.get('/', (req, res) => res.json('Hello World!'))
 
 //  # POST
 app.post('/vehicles', (req, res) => {
-  console.log(req.body)
   const validation = validateVehicles(req.body)
   if (validation.fail) {
     res.status(422)
