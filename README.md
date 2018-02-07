@@ -6,3 +6,5 @@
 * joi
 * mocha
 * chai
+* mongoose
+* joigoose
