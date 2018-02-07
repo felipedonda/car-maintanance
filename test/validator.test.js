@@ -8,7 +8,7 @@ make [type: string, mandatory: true, min-size: 0, max-size: 255]
 model [type: string, mandatory: true, min-size: 0, max-size: 255]
 year [type: string, mandatory: true]
 vin [type: string, mandatory: true, min-size: 0, max-size: 255]
-*/
+
 
 describe('vehicles', () => {
   const bigString256 = (new Array(257)).toString()
@@ -115,3 +115,4 @@ describe('vehicles', () => {
     expect(validateVehicles(wrongVehicle).fail).to.equal(true)
   })
 })
+*/

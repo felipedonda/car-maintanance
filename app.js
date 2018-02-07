@@ -7,40 +7,29 @@
     * quando id for igual, alterar (opcional)
 */
 
+
+
+
+//  configure app
 const express = require('express')
+const app = express()
+
+// dependencies
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const logger = require('morgan')
-const { validateVehicles } = require('./validator')
+const mongoose = require('mongoose')
 
-//  defining schema
+app.use(logger('dev'))
+app.use(cors())
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 
-const app = express()
+//  load models
+require('./models/vehicle');
 
-//  initializing logger
-app.use(logger('dev'),
-  cors(),
-  bodyParser.json(),
-  bodyParser.urlencoded({ extended: true })
-)
-
-app.get('/', (req, res) => res.json('Hello World!'))
-
-//  ### VEHICLES CONTROLLER ###
-
-//  # POST
-app.post('/vehicles', (req, res) => {
-  const validation = validateVehicles(req.body)
-  if (validation.fail) {
-    res.status(422)
-    return res.json({message: 'Invalid vehicle parameters!', error: validation.error.details[0].message})
-  }
-  res.json({id: req.body.id})
-})
-
-//  # GET
-app.get('/vehicles', (req, res) => {
-  res.json({message: 'Hello World!'})
-})
+//  load routes
+const routes = require('./routes')
+app.use('/',routes)
 
 app.listen(80, () => console.log('car-maintenance listening on port 80!'))
