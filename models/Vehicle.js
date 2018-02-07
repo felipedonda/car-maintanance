@@ -9,9 +9,12 @@ const joiVehicleSchema = joi.object().keys({
     model: joi.string().min(0).max(255).required(),
     year: joi.string().required(),
     vin: joi.string().min(0).max(255).required(),
-}).meta({ _id: false })
+})
 
 const vehicleSchema = new mongoose.Schema(joigoose.convert(joiVehicleSchema));
+
+//joigoose convertion 'unique' property workaround
+vehicleSchema.obj.id.unique = true
 
 vehicleSchema.statics.validate = function(obj) {
     const result = joi.validate(obj,joiVehicleSchema)
