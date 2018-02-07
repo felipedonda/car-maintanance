@@ -1,4 +1,6 @@
-const { validateVehicles } = require('../validator')
+const mongoose = require('mongoose')
+require('../models/vehicle');
+const Vehicle = mongoose.model('Vehicle')
 const { expect } = require('chai')
 
 /*
@@ -8,7 +10,7 @@ make [type: string, mandatory: true, min-size: 0, max-size: 255]
 model [type: string, mandatory: true, min-size: 0, max-size: 255]
 year [type: string, mandatory: true]
 vin [type: string, mandatory: true, min-size: 0, max-size: 255]
-
+*/
 
 describe('vehicles', () => {
   const bigString256 = (new Array(257)).toString()
@@ -23,7 +25,7 @@ describe('vehicles', () => {
   }
 
   it('should validate object is right', () => {
-    expect(validateVehicles(rightVehicle).fail).to.equal(false)
+    expect(Vehicle.validate(rightVehicle).fail).to.equal(false)
   })
 
   // ### ID
@@ -32,14 +34,14 @@ describe('vehicles', () => {
     const wrongVehicle = Object.assign({}, rightVehicle, {
       id: 2
     })
-    expect(validateVehicles(wrongVehicle).fail).to.equal(true)
+    expect(Vehicle.validate(wrongVehicle).fail).to.equal(true)
   })
 
   it('should validate id is null', () => {
     const wrongVehicle = Object.assign({}, rightVehicle, {
       id: null
     })
-    expect(validateVehicles(wrongVehicle).fail).to.equal(true)
+    expect(Vehicle.validate(wrongVehicle).fail).to.equal(true)
   })
 
   // ### NAME
@@ -48,14 +50,14 @@ describe('vehicles', () => {
     const wrongVehicle = Object.assign({}, rightVehicle, {
       name: 'fo'
     })
-    expect(validateVehicles(wrongVehicle).fail).to.equal(true)
+    expect(Vehicle.validate(wrongVehicle).fail).to.equal(true)
   })
 
   it('should validate name is null', () => {
     const wrongVehicle = Object.assign({}, rightVehicle, {
       name: null
     })
-    expect(validateVehicles(wrongVehicle).fail).to.equal(true)
+    expect(Vehicle.validate(wrongVehicle).fail).to.equal(true)
   })
 
   // ### MAKE
@@ -64,14 +66,14 @@ describe('vehicles', () => {
     const wrongVehicle = Object.assign({}, rightVehicle, {
       make: bigString256
     })
-    expect(validateVehicles(wrongVehicle).fail).to.equal(true)
+    expect(Vehicle.validate(wrongVehicle).fail).to.equal(true)
   })
 
   it('should validate make is null', () => {
     const wrongVehicle = Object.assign({}, rightVehicle, {
       make: null
     })
-    expect(validateVehicles(wrongVehicle).fail).to.equal(true)
+    expect(Vehicle.validate(wrongVehicle).fail).to.equal(true)
   })
 
   // ### MODEL
@@ -80,14 +82,14 @@ describe('vehicles', () => {
     const wrongVehicle = Object.assign({}, rightVehicle, {
       model: bigString256
     })
-    expect(validateVehicles(wrongVehicle).fail).to.equal(true)
+    expect(Vehicle.validate(wrongVehicle).fail).to.equal(true)
   })
 
   it('should validate model is null', () => {
     const wrongVehicle = Object.assign({}, rightVehicle, {
       model: null
     })
-    expect(validateVehicles(wrongVehicle).fail).to.equal(true)
+    expect(Vehicle.validate(wrongVehicle).fail).to.equal(true)
   })
 
   // ### YEAR
@@ -96,7 +98,7 @@ describe('vehicles', () => {
     const wrongVehicle = Object.assign({}, rightVehicle, {
       year: null
     })
-    expect(validateVehicles(wrongVehicle).fail).to.equal(true)
+    expect(Vehicle.validate(wrongVehicle).fail).to.equal(true)
   })
 
   // ### VIN
@@ -105,14 +107,13 @@ describe('vehicles', () => {
     const wrongVehicle = Object.assign({}, rightVehicle, {
       vin: bigString256
     })
-    expect(validateVehicles(wrongVehicle).fail).to.equal(true)
+    expect(Vehicle.validate(wrongVehicle).fail).to.equal(true)
   })
 
   it('should validate vin is null', () => {
     const wrongVehicle = Object.assign({}, rightVehicle, {
       vin: null
     })
-    expect(validateVehicles(wrongVehicle).fail).to.equal(true)
+    expect(Vehicle.validate(wrongVehicle).fail).to.equal(true)
   })
 })
-*/
