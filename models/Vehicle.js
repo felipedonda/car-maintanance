@@ -8,7 +8,7 @@ const joiVehicleSchema = joi.object().keys({
     make: joi.string().min(0).max(255).required(),
     model: joi.string().min(0).max(255).required(),
     year: joi.string().required(),
-    vin: joi.string().min(0).max(255).required(),
+    vin: joi.string().min(0).max(255).required()
 })
 
 const vehicleSchema = new mongoose.Schema(joigoose.convert(joiVehicleSchema));
