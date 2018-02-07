@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-require('../models/vehicle');
+require('../models/Vehicle');
 const Vehicle = mongoose.model('Vehicle')
 const { expect } = require('chai')
 

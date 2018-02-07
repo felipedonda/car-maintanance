@@ -26,7 +26,7 @@ if (isProduction) {
 }
 
 //  load models
-require('./models/vehicle')
+require('./models/Vehicle')
 
 //  load routes
 const routes = require('./routes')
