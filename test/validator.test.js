@@ -37,13 +37,6 @@ describe('vehicles', () => {
     expect(Vehicle.validate(wrongVehicle).fail).to.equal(true)
   })
 
-  it('should validate id is null', () => {
-    const wrongVehicle = Object.assign({}, rightVehicle, {
-      id: null
-    })
-    expect(Vehicle.validate(wrongVehicle).fail).to.equal(true)
-  })
-
   // ### NAME
 
   it('should validate name is wrong', () => {
