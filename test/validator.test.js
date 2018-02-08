@@ -1,3 +1,4 @@
+/* global describe, it */
 const mongoose = require('mongoose')
 require('../models/Vehicle')
 const Vehicle = mongoose.model('Vehicle')
