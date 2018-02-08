@@ -6,14 +6,6 @@ const guid = require('guid')
 const isProduction = process.env.NODE_ENV === 'production'
 
 // used for PUT validation
-const goodVehicle = {
-  _id: '02e64a43-39d4-4f8c-ae05-473560169e97',
-  name: 'foo',
-  make: 'lorem ipsum',
-  model: 'lorem ipsum',
-  year: '9999',
-  vin: 'lorem ipsum'
-}
 
 //  # POST
 router.post('/', (req, res) => {
@@ -90,6 +82,14 @@ router.put('/:id', (req, res) => {
     }
 
     //  validating
+    const goodVehicle = {
+      _id: '02e64a43-39d4-4f8c-ae05-473560169e97',
+      name: 'foo',
+      make: 'lorem ipsum',
+      model: 'lorem ipsum',
+      year: '9999',
+      vin: 'lorem ipsum'
+    }    
     const validation = Vehicle.validate(Object.assign({}, goodVehicle, req.body))
     if (validation.fail) {
       return res.status(422).json({ message: 'Invalid vehicle parameters!', error: validation.error.details[0].message })
