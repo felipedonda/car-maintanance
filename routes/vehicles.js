@@ -2,51 +2,70 @@ const express = require('express')
 const router = express.Router()
 const mongoose = require('mongoose')
 const Vehicle = mongoose.model('Vehicle')
+const guid = require('guid')
+const isProduction = process.env.NODE_ENV === 'production'
+
+// used for PUT validation
+const goodVehicle = {
+  _id: '02e64a43-39d4-4f8c-ae05-473560169e97',
+  name: 'foo',
+  make: 'lorem ipsum',
+  model: 'lorem ipsum',
+  year: '9999',
+  vin: 'lorem ipsum'
+}
 
 //  # POST
 router.post('/', (req, res) => {
+  //  validating
   const validation = Vehicle.validate(req.body)
   if (validation.fail) {
     return res.status(422).json({ message: 'Invalid vehicle parameters!', error: validation.error.details[0].message })
   }
 
-  vehicle = new Vehicle({
-    id: req.body.id,
-    name: req.body.name,
-    make: req.body.make,
-    model: req.body.model,
-    year: req.body.year,
-    vin: req.body.vin
-  })
+  vehicle = new Vehicle(req.body)
 
-  vehicle.save((err, obj) =>{
-    if(err) {
-      return res.status(500).json({ message: 'Error saving vehicle.' })
+  if (!vehicle._id) {
+    vehicle._id = guid.create()
+  }
+
+  //  saving on db
+  vehicle.save((err, obj) => {
+    if (err) {
+      const outerr = { message: 'Error saving vehicle.' }
+      if (!isProduction) { outerr.error = err }
+      return res.status(500).json(outerr)
     }
-    return res.status(200).json({ message: 'Vehicle saved sucessfully.', id: obj.id })
+    return res.status(200).json({ message: 'Vehicle saved sucessfully.', _id: obj._id })
   })
 })
 
 //  # GET
 router.get('/', (req, res) => {
-  Vehicle.find( (err, list) => {
-      if(err) {
-        return res.status(500).json({ message: 'Error getting vehicles.' })
-      }
-      return res.json(list)
+  //  finding on db
+  Vehicle.find((err, list) => {
+    if (err) {
+      const outerr = { message: 'Error getting vehicle.' }
+      if (!isProduction) { outerr.error = err }
+      return res.status(500).json(outerr)
+    }
+    return res.json(list)
   })
 })
 
 //  # GET
 router.get('/:id', (req, res) => {
   const id = req.params.id
-  
-  Vehicle.findOne({id: id}, (err, obj) => {
-    if(err) {
-      return res.status(500).json({ message: 'Error getting vehicle.' })
+
+  //  finding on db
+  Vehicle.findOne({_id: id}, (err, obj) => {
+    if (err) {
+      const outerr = { message: 'Error getting vehicle.' }
+      if (!isProduction) { outerr.error = err }
+      return res.status(500).json(outerr)
     }
 
-    if(!obj) {
+    if (!obj) {
       return res.status(404).json({ message: 'No such vehicle.' })
     }
 
@@ -54,27 +73,37 @@ router.get('/:id', (req, res) => {
   })
 })
 
-
 //  # PUT
 router.put('/:id', (req, res) => {
   const id = req.params.id
-  
-  Vehicle.findOne({id: id}, (err, vehicle) => {
-    if(err) {
-      return res.status(500).json({ message: 'Error getting vehicle.' })
+
+  //  finding on db
+  Vehicle.findOne({_id: id}, (err, vehicle) => {
+    if (err) {
+      const outerr = { message: 'Error getting vehicle.' }
+      if (!isProduction) { outerr.error = err }
+      return res.status(500).json(outerr)
     }
 
-    if(!vehicle) {
+    if (!vehicle) {
       return res.status(404).json({ message: 'No such vehicle.' })
     }
 
+    //  validating
+    const validation = Vehicle.validate(Object.assign({}, goodVehicle, req.body))
+    if (validation.fail) {
+      return res.status(422).json({ message: 'Invalid vehicle parameters!', error: validation.error.details[0].message })
+    }
+
+    // assigning new values to object
     Object.assign(vehicle, req.body)
 
-    //  to do validation
-
-    vehicle.save((err, obj) =>{
-      if(err) {
-        return res.status(500).json({ message: 'Error saving vehicle.' })
+    //  saving to db
+    vehicle.save((err, obj) => {
+      if (err) {
+        const outerr = { message: 'Error saving vehicle.' }
+        if (!isProduction) { outerr.error = err }
+        return res.status(500).json(outerr)
       }
       return res.status(200).json({ message: 'Vehicle saved sucessfully.', id: obj.id })
     })
@@ -84,19 +113,25 @@ router.put('/:id', (req, res) => {
 //  # DELETE
 router.delete('/:id', (req, res) => {
   const id = req.params.id
-  
-  Vehicle.findOne({id: id}, (err, vehicle) => {
-    if(err) {
-      return res.status(500).json({ message: 'Error getting vehicle.' })
+
+  //  finding on db
+  Vehicle.findOne({_id: id}, (err, vehicle) => {
+    if (err) {
+      const outerr = { message: 'Error getting vehicle.' }
+      if (!isProduction) { outerr.error = err }
+      return res.status(500).json(outerr)
     }
 
-    if(!vehicle) {
+    if (!vehicle) {
       return res.status(404).json({ message: 'No such vehicle.' })
     }
 
+    // removing from db
     vehicle.remove((err, obj) => {
-      if(err) {
-        return res.status(500).json({ message: 'Error deleting vehicle.' })
+      if (err) {
+        const outerr = { message: 'Error deleting vehicle.' }
+        if (!isProduction) { outerr.error = err }
+        return res.status(500).json(outerr)
       }
       return res.status(200).json({ message: 'Vehicle deleted sucessfully.', id: obj.id })
     })
