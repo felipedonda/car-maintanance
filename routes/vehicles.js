@@ -5,8 +5,6 @@ const Vehicle = mongoose.model('Vehicle')
 const guid = require('guid')
 const isProduction = process.env.NODE_ENV === 'production'
 
-// used for PUT validation
-
 //  # POST
 router.post('/', (req, res) => {
   //  validating
