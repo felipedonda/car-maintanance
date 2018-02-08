@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-require('../models/Vehicle');
+require('../models/Vehicle')
 const Vehicle = mongoose.model('Vehicle')
 const { expect } = require('chai')
 
@@ -16,7 +16,7 @@ describe('vehicles', () => {
   const bigString256 = (new Array(257)).toString()
 
   const goodVehicle = {
-    id: '02e64a43-39d4-4f8c-ae05-473560169e97',
+    _id: '02e64a43-39d4-4f8c-ae05-473560169e97',
     name: 'foo',
     make: 'lorem ipsum',
     model: 'lorem ipsum',
