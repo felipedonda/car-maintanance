@@ -31,83 +31,83 @@ describe('vehicles', () => {
 
   // ### ID
 
-  it('should validate id is wrong', () => {
-    const wrongVehicle = Object.assign({}, goodVehicle, {
+  it('should validate id is invalid', () => {
+    const badVehicle = Object.assign({}, goodVehicle, {
       id: 2
     })
-    expect(Vehicle.validate(wrongVehicle).fail).to.equal(true)
+    expect(Vehicle.validate(badVehicle).fail).to.equal(true)
   })
 
   // ### NAME
 
-  it('should validate name is wrong', () => {
-    const wrongVehicle = Object.assign({}, goodVehicle, {
+  it('should validate name is invalid', () => {
+    const badVehicle = Object.assign({}, goodVehicle, {
       name: 'fo'
     })
-    expect(Vehicle.validate(wrongVehicle).fail).to.equal(true)
+    expect(Vehicle.validate(badVehicle).fail).to.equal(true)
   })
 
   it('should validate name is null', () => {
-    const wrongVehicle = Object.assign({}, goodVehicle, {
+    const badVehicle = Object.assign({}, goodVehicle, {
       name: null
     })
-    expect(Vehicle.validate(wrongVehicle).fail).to.equal(true)
+    expect(Vehicle.validate(badVehicle).fail).to.equal(true)
   })
 
   // ### MAKE
 
-  it('should validate make is wrong', () => {
-    const wrongVehicle = Object.assign({}, goodVehicle, {
+  it('should validate make is invalid', () => {
+    const badVehicle = Object.assign({}, goodVehicle, {
       make: bigString256
     })
-    expect(Vehicle.validate(wrongVehicle).fail).to.equal(true)
+    expect(Vehicle.validate(badVehicle).fail).to.equal(true)
   })
 
   it('should validate make is null', () => {
-    const wrongVehicle = Object.assign({}, goodVehicle, {
+    const badVehicle = Object.assign({}, goodVehicle, {
       make: null
     })
-    expect(Vehicle.validate(wrongVehicle).fail).to.equal(true)
+    expect(Vehicle.validate(badVehicle).fail).to.equal(true)
   })
 
   // ### MODEL
 
-  it('should validate model is wrong', () => {
-    const wrongVehicle = Object.assign({}, goodVehicle, {
+  it('should validate model is invalid', () => {
+    const badVehicle = Object.assign({}, goodVehicle, {
       model: bigString256
     })
-    expect(Vehicle.validate(wrongVehicle).fail).to.equal(true)
+    expect(Vehicle.validate(badVehicle).fail).to.equal(true)
   })
 
   it('should validate model is null', () => {
-    const wrongVehicle = Object.assign({}, goodVehicle, {
+    const badVehicle = Object.assign({}, goodVehicle, {
       model: null
     })
-    expect(Vehicle.validate(wrongVehicle).fail).to.equal(true)
+    expect(Vehicle.validate(badVehicle).fail).to.equal(true)
   })
 
   // ### YEAR
 
   it('should validate year is null', () => {
-    const wrongVehicle = Object.assign({}, goodVehicle, {
+    const badVehicle = Object.assign({}, goodVehicle, {
       year: null
     })
-    expect(Vehicle.validate(wrongVehicle).fail).to.equal(true)
+    expect(Vehicle.validate(badVehicle).fail).to.equal(true)
   })
 
   // ### VIN
 
-  it('should validate vin is wrong', () => {
-    const wrongVehicle = Object.assign({}, goodVehicle, {
+  it('should validate vin is invalid', () => {
+    const badVehicle = Object.assign({}, goodVehicle, {
       vin: bigString256
     })
-    expect(Vehicle.validate(wrongVehicle).fail).to.equal(true)
+    expect(Vehicle.validate(badVehicle).fail).to.equal(true)
   })
 
   it('should validate vin is null', () => {
-    const wrongVehicle = Object.assign({}, goodVehicle, {
+    const badVehicle = Object.assign({}, goodVehicle, {
       vin: null
     })
-    expect(Vehicle.validate(wrongVehicle).fail).to.equal(true)
+    expect(Vehicle.validate(badVehicle).fail).to.equal(true)
   })
 })
