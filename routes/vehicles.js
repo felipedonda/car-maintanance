@@ -23,7 +23,7 @@ router.post('/', (req, res) => {
     return res.status(422).json({ message: 'Invalid vehicle parameters!', error: validation.error.details[0].message })
   }
 
-  vehicle = new Vehicle(req.body)
+  const vehicle = new Vehicle(req.body)
 
   if (!vehicle._id) {
     vehicle._id = guid.create()
