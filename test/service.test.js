@@ -16,8 +16,7 @@ describe('service', () => {
   const goodService = {
     _id: '76c6c967-31e4-4ef4-9207-2d7f1fc6405a',
     name: 'foo',
-    description: 'lorem ipsum',
-    vehicle_slug: '02e64a43-39d4-4f8c-ae05-473560169e97'
+    description: 'lorem ipsum'
   }
 
   it('should validate object is right', () => {
@@ -54,6 +53,13 @@ describe('service', () => {
   it('should validate description is invalid', () => {
     const badService = Object.assign({}, goodService, {
       description: bigString256
+    })
+    expect(Service.validate(badService).fail).to.equal(true)
+  })
+
+  it('should allow description is null', () => {
+    const badService = Object.assign({}, goodService, {
+      description: null
     })
     expect(Service.validate(badService).fail).to.equal(true)
   })

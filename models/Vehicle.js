@@ -36,7 +36,7 @@ vehicleSchema.pre('validate', function (next) {
   }
 
   if (!this.slug) {
-    const tempSlug = Slug(''.concat(this.make, '-', this.model, '-', this.year, '-', this.name))
+    const tempSlug = Slug(''.concat(this.make, '-', this.model, '-', this.year, '-', this.name).toLowerCase())
     this.constructor.find({
       slug: {$regex: tempSlug.concat('[-]*[0-9]*')}
     }, (err, list) => {
