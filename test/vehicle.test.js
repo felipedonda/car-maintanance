@@ -11,6 +11,8 @@ make [type: string, mandatory: true, min-size: 0, max-size: 255]
 model [type: string, mandatory: true, min-size: 0, max-size: 255]
 year [type: string, mandatory: true]
 vin [type: string, mandatory: true, min-size: 0, max-size: 255]
+
+slug [type: string, mandatory: true]
 */
 
 describe('vehicles', () => {
@@ -19,11 +21,13 @@ describe('vehicles', () => {
   const goodVehicle = {
     _id: '02e64a43-39d4-4f8c-ae05-473560169e97',
     name: 'foo',
-    make: 'lorem ipsum',
-    model: 'lorem ipsum',
-    year: '9999',
-    vin: 'lorem ipsum'
+    make: 'lorem',
+    model: 'ipsum',
+    year: '2000',
+    vin: '1FD8X3G64DEA72527',
+    slug: 'lorem-ipsum-2000-foo'
   }
+  //  Disclaimer: vin randomly generated, any resemblance is mere coincidence
 
   it('should validate object is right', () => {
     expect(Vehicle.validate(goodVehicle).fail).to.equal(false)

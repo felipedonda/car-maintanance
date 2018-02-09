@@ -8,3 +8,5 @@
 * chai
 * mongoose
 * joigoose
+* mongoose-unique-validator
+* slug

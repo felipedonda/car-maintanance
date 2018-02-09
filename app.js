@@ -21,12 +21,13 @@ app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-if (isProduction) {
+if (!isProduction) {
   app.use(logger('dev'))
 }
 
 //  load models
 require('./models/Vehicle')
+require('./models/Service')
 
 //  load routes
 const routes = require('./routes')

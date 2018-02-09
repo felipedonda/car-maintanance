@@ -1,22 +1,58 @@
 const mongoose = require('mongoose')
 const joi = require('joi')
 const joigoose = require('joigoose')(mongoose)
+const guid = require('guid')
+const Slug = require('slug')
 
+// defining joi schema
 const joiVehicleSchema = joi.object().keys({
   _id: joi.string().guid(),
   name: joi.string().min(3).max(10).required(),
-  make: joi.string().min(0).max(255).required(),
-  model: joi.string().min(0).max(255).required(),
+  make: joi.string().max(255).required(),
+  model: joi.string().max(255).required(),
   year: joi.string().required(),
-  vin: joi.string().min(0).max(255).required()
+  vin: joi.string().max(255).required(),
+  slug: joi.string()
 })
 
+// convert joi schema to mongoose schema
 const vehicleSchema = new mongoose.Schema(joigoose.convert(joiVehicleSchema))
 
-vehicleSchema.statics.validate = function (obj) {
+// overriding joigoose schema configuration
+vehicleSchema.add({slug: {type: 'string', unique: true, required: true}})
+
+// joi validation method
+vehicleSchema.statics.validate = (obj) => {
   const result = joi.validate(obj, joiVehicleSchema)
   result.fail = result.error !== null
   return result
 }
+
+// mongoose pre validation hook to create slug or id if necessary
+
+vehicleSchema.pre('validate', function (next) {
+  if (!this._id) {
+    this._id = guid.create()
+  }
+
+  if (!this.slug) {
+    const tempSlug = Slug(''.concat(this.make, '-', this.model, '-', this.year, '-', this.name))
+    this.constructor.find({
+      slug: {$regex: tempSlug.concat('[-]*[0-9]*')}
+    }, (err, list) => {
+      if (err) {
+        throw err
+      }
+      if (list.length > 0) {
+        this.slug = tempSlug.concat('-', list.length + 1)
+      } else {
+        this.slug = tempSlug
+      }
+      next()
+    })
+  } else {
+    next()
+  }
+})
 
 mongoose.model('Vehicle', vehicleSchema)
