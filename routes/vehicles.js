@@ -9,6 +9,7 @@ router.post('/', (req, res) => {
   //  validating
   const validation = Vehicle.validate(req.body)
   if (validation.fail) {
+    console.log(validation.error.details)
     return res.status(422).json({ message: 'Invalid vehicle parameters!', error: validation.error.details[0].message })
   }
 

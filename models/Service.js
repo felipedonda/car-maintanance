@@ -24,13 +24,15 @@ serviceSchema.statics.validate = (obj) => {
   return result
 }
 
-// config relationships and custom 'foreign keys'
+/*
+//  config relationships and custom 'foreign keys'
 serviceSchema.virtual('vehicle', {
   ref: 'Vehicle',
   localField: 'vehicle_slug',
   foreignField: 'slug',
   justOne: true
 })
+*/
 
 // mongoose pre validation hook to create slug or id if necessary
 

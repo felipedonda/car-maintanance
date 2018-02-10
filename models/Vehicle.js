@@ -19,7 +19,7 @@ const joiVehicleSchema = joi.object().keys({
 const vehicleSchema = new mongoose.Schema(joigoose.convert(joiVehicleSchema))
 
 // overriding joigoose schema configuration
-vehicleSchema.add({slug: {type: 'string', unique: true, required: true}})
+vehicleSchema.add({slug: {type: 'string', unique: true, required: true, index: true}})
 
 // joi validation method
 vehicleSchema.statics.validate = (obj) => {
@@ -36,23 +36,9 @@ vehicleSchema.pre('validate', function (next) {
   }
 
   if (!this.slug) {
-    const tempSlug = Slug(''.concat(this.make, '-', this.model, '-', this.year, '-', this.name).toLowerCase())
-    this.constructor.find({
-      slug: {$regex: tempSlug.concat('[-]*[0-9]*')}
-    }, (err, list) => {
-      if (err) {
-        throw err
-      }
-      if (list.length > 0) {
-        this.slug = tempSlug.concat('-', list.length + 1)
-      } else {
-        this.slug = tempSlug
-      }
-      next()
-    })
-  } else {
-    next()
+    this.slug = Slug(''.concat(this.name, '-', (Math.random() * Math.pow(36, 6) | 0).toString(36)).toLowerCase())
   }
+  next()
 })
 
 mongoose.model('Vehicle', vehicleSchema)

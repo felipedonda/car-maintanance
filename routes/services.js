@@ -10,13 +10,13 @@ router.post('/:vehicle_slug/services', (req, res) => {
   const vehicleSlug = req.params.vehicle_slug
 
   //  finding on db
-  Vehicle.findOne({slug: vehicleSlug}, (err, vehicle) => {
+  Vehicle.count({slug: vehicleSlug}, (err, vehicle) => {
     if (err) {
       if (!isProduction) { console.log(err) }
       return res.status(500).json({ message: 'Error getting vehicle.' })
     }
 
-    if (!vehicle) {
+    if (vehicle === 0) {
       return res.status(404).json({ message: 'No such vehicle.' })
     }
 
@@ -43,13 +43,13 @@ router.get('/:vehicle_slug/services', (req, res) => {
   const vehicleSlug = req.params.vehicle_slug
 
   //  finding on db
-  Vehicle.findOne({slug: vehicleSlug}, (err, vehicle) => {
+  Vehicle.count({slug: vehicleSlug}, (err, vehicle) => {
     if (err) {
       if (!isProduction) { console.log(err) }
       return res.status(500).json({ message: 'Error getting vehicle.' })
     }
 
-    if (!vehicle) {
+    if (vehicle === 0) {
       return res.status(404).json({ message: 'No such vehicle.' })
     }
 
@@ -70,13 +70,13 @@ router.get('/:vehicle_slug/services/:id', (req, res) => {
   const id = req.params.id
 
   //  finding on db
-  Vehicle.findOne({slug: vehicleSlug}, (err, vehicle) => {
+  Vehicle.count({slug: vehicleSlug}, (err, vehicle) => {
     if (err) {
       if (!isProduction) { console.log(err) }
       return res.status(500).json({ message: 'Error getting vehicle.' })
     }
 
-    if (!vehicle) {
+    if (vehicle === 0) {
       return res.status(404).json({ message: 'No such vehicle.' })
     }
 
@@ -99,13 +99,13 @@ router.put('/:vehicle_slug/services/:id', (req, res) => {
   const id = req.params.id
 
   //  finding on db
-  Vehicle.findOne({slug: vehicleSlug}, (err, vehicle) => {
+  Vehicle.count({slug: vehicleSlug}, (err, vehicle) => {
     if (err) {
       if (!isProduction) { console.log(err) }
       return res.status(500).json({ message: 'Error getting vehicle.' })
     }
 
-    if (!vehicle) {
+    if (vehicle === 0) {
       return res.status(404).json({ message: 'No such vehicle.' })
     }
 
@@ -159,13 +159,13 @@ router.delete('/:vehicle_slug/services/:id', (req, res) => {
   const id = req.params.id
 
   //  finding on db
-  Vehicle.findOne({slug: vehicleSlug}, (err, vehicle) => {
+  Vehicle.count({slug: vehicleSlug}, (err, vehicle) => {
     if (err) {
       if (!isProduction) { console.log(err) }
       return res.status(500).json({ message: 'Error getting vehicle.' })
     }
 
-    if (!vehicle) {
+    if (vehicle === 0) {
       return res.status(404).json({ message: 'No such vehicle.' })
     }
 
