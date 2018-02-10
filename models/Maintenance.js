@@ -24,10 +24,10 @@ maintenanceSchema.statics.validate = (obj) => {
 
   if (obj.started_at > obj.finished_at) {
     if (result.error) {
-      result.error.details.push('Value started_at later than finished_at.')
+      result.error.details.push({message: 'Value "started_at" later than "finished_at"'})
     } else {
       result.error = {
-        details: ['Value "started_at" later than "finished_at"']
+        details: [{message: 'Value "started_at" later than "finished_at"'}]
       }
     }
   }

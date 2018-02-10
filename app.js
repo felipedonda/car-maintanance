@@ -28,6 +28,7 @@ if (!isProduction) {
 //  load models
 require('./models/Vehicle')
 require('./models/Service')
+require('./models/Maintenance')
 
 //  load routes
 const routes = require('./routes')
