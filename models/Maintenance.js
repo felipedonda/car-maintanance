@@ -15,11 +15,23 @@ const joiMaintenanceSchema = joi.object().keys({
 const maintenanceSchema = new mongoose.Schema(joigoose.convert(joiMaintenanceSchema))
 
 // overriding joigoose schema configuration
-maintenanceSchema.add({vehicle_slug: {type: 'string', required: true}})
+maintenanceSchema.add({vehicle_slug: {type: [String], required: true}})
+maintenanceSchema.add({started_at: {type: [Date], required: true}})
 
 // joi validation method
 maintenanceSchema.statics.validate = (obj) => {
   const result = joi.validate(obj, joiMaintenanceSchema)
+
+  if (obj.started_at > obj.finished_at) {
+    if (result.error) {
+      result.error.details.push('Value started_at later than finished_at.')
+    } else {
+      result.error = {
+        details: ['Value "started_at" later than "finished_at"']
+      }
+    }
+  }
+
   result.fail = result.error !== null
   return result
 }
