@@ -15,13 +15,13 @@ const app = express()
 const isProduction = process.env.NODE_ENV === 'production'
 const cors = require('cors')
 const bodyParser = require('body-parser')
-const logger = require('morgan')
 
 app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 if (!isProduction) {
+  const logger = require('morgan')
   app.use(logger('dev'))
 }
 
