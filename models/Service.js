@@ -15,7 +15,7 @@ const joiServiceSchema = joi.object().keys({
 const serviceSchema = new mongoose.Schema(joigoose.convert(joiServiceSchema))
 
 // overriding joigoose schema configuration
-serviceSchema.add({vehicle_slug: {type: 'string', required: true}})
+serviceSchema.add({vehicle_slug: {type: 'string', required: true, index: true}})
 
 // joi validation method
 serviceSchema.statics.validate = (obj) => {
