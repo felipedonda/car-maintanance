@@ -1,17 +1,21 @@
-* docker
+## Vehicle Maintenance API Challenge
+
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ca1db85e2e778889e76a)
+
+### Technologies
+
 * node.js
-* express
-* eslint standard
-* body-parser
-* joi
+* travis ci
+* docker
 * mocha
 * chai
+* eslint standard
+* MongoDB
+* express
+* joi
 * mongoose
-* joigoose
-* mongoose-unique-validator
-* slug
 
-<h3>TO DO's</h3>
+### TO DO's
 
 * PUT to update slug
 * GET support both slug and id
