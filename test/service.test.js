@@ -61,7 +61,7 @@ describe('service', () => {
     const badService = Object.assign({}, goodService, {
       description: null
     })
-    expect(Service.validate(badService).fail).to.equal(true)
+    expect(Service.validate(badService).fail).to.equal(false)
   })
 
   // ### VEHICLE

@@ -7,7 +7,7 @@ const guid = require('guid')
 const joiServiceSchema = joi.object().keys({
   _id: joi.string().guid(),
   name: joi.string().min(3).max(10).required(),
-  description: joi.string().max(255),
+  description: joi.string().max(255).allow(null).optional(),
   vehicle_slug: joi.string()
 })
 
@@ -15,7 +15,7 @@ const joiServiceSchema = joi.object().keys({
 const serviceSchema = new mongoose.Schema(joigoose.convert(joiServiceSchema))
 
 // overriding joigoose schema configuration
-serviceSchema.add({vehicle_slug: {type: 'string', required: true, index: true}})
+serviceSchema.add({vehicle_slug: {type: [String], required: true, index: true}})
 
 // joi validation method
 serviceSchema.statics.validate = (obj) => {
