@@ -10,13 +10,13 @@ router.post('/:vehicle_slug/services', (req, res) => {
   const vehicleSlug = req.params.vehicle_slug
 
   //  finding on db
-  Vehicle.findOne({slug: vehicleSlug}, (err, obj) => {
+  Vehicle.findOne({slug: vehicleSlug}, (err, vehicle) => {
     if (err) {
       if (!isProduction) { console.log(err) }
       return res.status(500).json({ message: 'Error getting vehicle.' })
     }
 
-    if (!obj) {
+    if (!vehicle) {
       return res.status(404).json({ message: 'No such vehicle.' })
     }
 
@@ -43,13 +43,13 @@ router.get('/:vehicle_slug/services', (req, res) => {
   const vehicleSlug = req.params.vehicle_slug
 
   //  finding on db
-  Vehicle.findOne({slug: vehicleSlug}, (err, obj) => {
+  Vehicle.findOne({slug: vehicleSlug}, (err, vehicle) => {
     if (err) {
       if (!isProduction) { console.log(err) }
       return res.status(500).json({ message: 'Error getting vehicle.' })
     }
 
-    if (!obj) {
+    if (!vehicle) {
       return res.status(404).json({ message: 'No such vehicle.' })
     }
 
@@ -65,37 +65,18 @@ router.get('/:vehicle_slug/services', (req, res) => {
 })
 
 //  # GET
-router.get('/:id', (req, res) => {
-  const id = req.params.id
-
-  //  finding on db
-  Service.findOne({_id: id}, (err, obj) => {
-    if (err) {
-      if (!isProduction) { console.log(err) }
-      return res.status(500).json({ message: 'Error getting service.' })
-    }
-
-    if (!obj) {
-      return res.status(404).json({ message: 'No such service.' })
-    }
-
-    return res.json(obj)
-  })
-})
-
-//  # GET
-router.get('/:vehicle_slug/services/:d', (req, res) => {
+router.get('/:vehicle_slug/services/:id', (req, res) => {
   const vehicleSlug = req.params.vehicle_slug
   const id = req.params.id
 
   //  finding on db
-  Vehicle.findOne({slug: vehicleSlug}, (err, obj) => {
+  Vehicle.findOne({slug: vehicleSlug}, (err, vehicle) => {
     if (err) {
       if (!isProduction) { console.log(err) }
       return res.status(500).json({ message: 'Error getting vehicle.' })
     }
 
-    if (!obj) {
+    if (!vehicle) {
       return res.status(404).json({ message: 'No such vehicle.' })
     }
 
@@ -113,74 +94,99 @@ router.get('/:vehicle_slug/services/:d', (req, res) => {
 })
 
 //  # PUT
-router.put('/:id', (req, res) => {
+router.put('/:vehicle_slug/services/:id', (req, res) => {
+  const vehicleSlug = req.params.vehicle_slug
   const id = req.params.id
 
   //  finding on db
-  Service.findOne({_id: id}, (err, service) => {
+  Vehicle.findOne({slug: vehicleSlug}, (err, vehicle) => {
     if (err) {
       if (!isProduction) { console.log(err) }
-      return res.status(500).json({ message: 'Error getting service.' })
+      return res.status(500).json({ message: 'Error getting vehicle.' })
     }
 
-    if (!service) {
-      return res.status(404).json({ message: 'No such service.' })
+    if (!vehicle) {
+      return res.status(404).json({ message: 'No such vehicle.' })
     }
 
-    //  validating
-    const goodService = {
-      _id: '76c6c967-31e4-4ef4-9207-2d7f1fc6405a',
-      name: 'foo',
-      description: 'lorem ipsum',
-      vehicle_slug: '02e64a43-39d4-4f8c-ae05-473560169e97'
-    }
-
-    //  Disclaimer: vin randomly generated, any resemblance is mere coincidence
-    const validation = Service.validate(Object.assign(
-      {},
-      goodService,
-      req.body
-    ))
-    if (validation.fail) {
-      return res.status(422).json({ message: 'Invalid service parameters!', error: validation.error.details[0].message })
-    }
-
-    // assigning new values to object
-    Object.assign(service, req.body)
-
-    //  saving to db
-    service.save((err, obj) => {
+    //  finding on db
+    Service.findOne({_id: id}, (err, service) => {
       if (err) {
         if (!isProduction) { console.log(err) }
-        return res.status(500).json({ message: 'Error saving service.' })
+        return res.status(500).json({ message: 'Error getting service.' })
       }
 
-      return res.status(200).json({ message: 'Service saved sucessfully.', id: obj.id, slug: obj.slug })
+      if (!service) {
+        return res.status(404).json({ message: 'No such service.' })
+      }
+
+      //  validating
+      const goodService = {
+        _id: '76c6c967-31e4-4ef4-9207-2d7f1fc6405a',
+        name: 'foo',
+        description: 'lorem ipsum',
+        vehicle_slug: '02e64a43-39d4-4f8c-ae05-473560169e97'
+      }
+
+      //  Disclaimer: vin randomly generated, any resemblance is mere coincidence
+      const validation = Service.validate(Object.assign(
+        {},
+        goodService,
+        req.body
+      ))
+      if (validation.fail) {
+        return res.status(422).json({ message: 'Invalid service parameters!', error: validation.error.details[0].message })
+      }
+
+      // assigning new values to object
+      Object.assign(service, req.body)
+
+      //  saving to db
+      service.save((err, obj) => {
+        if (err) {
+          if (!isProduction) { console.log(err) }
+          return res.status(500).json({ message: 'Error saving service.' })
+        }
+        return res.status(200).json({ message: 'Service saved sucessfully.', id: obj.id, slug: obj.slug })
+      })
     })
   })
 })
 
 //  # DELETE
-router.delete('/:id', (req, res) => {
+router.delete('/:vehicle_slug/services/:id', (req, res) => {
+  const vehicleSlug = req.params.vehicle_slug
   const id = req.params.id
 
   //  finding on db
-  Service.findOne({_id: id}, (err, service) => {
+  Vehicle.findOne({slug: vehicleSlug}, (err, vehicle) => {
     if (err) {
       if (!isProduction) { console.log(err) }
-      return res.status(500).json({ message: 'Error getting service.' })
-    }
-    if (!service) {
-      return res.status(404).json({ message: 'No such service.' })
+      return res.status(500).json({ message: 'Error getting vehicle.' })
     }
 
-    // removing from db
-    service.remove((err, obj) => {
+    if (!vehicle) {
+      return res.status(404).json({ message: 'No such vehicle.' })
+    }
+
+    //  finding on db
+    Service.findOne({_id: id}, (err, service) => {
       if (err) {
         if (!isProduction) { console.log(err) }
-        return res.status(500).json({ message: 'Error deleting service.' })
+        return res.status(500).json({ message: 'Error getting service.' })
       }
-      return res.status(200).json({ message: 'Service deleted sucessfully.', id: obj.id })
+      if (!service) {
+        return res.status(404).json({ message: 'No such service.' })
+      }
+
+      // removing from db
+      service.remove((err, obj) => {
+        if (err) {
+          if (!isProduction) { console.log(err) }
+          return res.status(500).json({ message: 'Error deleting service.' })
+        }
+        return res.status(200).json({ message: 'Service deleted sucessfully.', id: obj.id })
+      })
     })
   })
 })
