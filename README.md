@@ -1,5 +1,5 @@
 ## Vehicle Maintenance API Challenge
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ca1db85e2e778889e76a) [![Build Status](https://travis-ci.org/felipedonda/car-maintanance.svg?branch=master)](https://travis-ci.org/felipedonda/car-maintanance)
+[![Build Status](https://travis-ci.org/felipedonda/car-maintanance.svg?branch=master)](https://travis-ci.org/felipedonda/car-maintanance) [![Run in Postman](https://img.shields.io/badge/postman-collection-orange.svg)](https://app.getpostman.com/run-collection/ca1db85e2e778889e76a)
 
 ### Technologies
 
