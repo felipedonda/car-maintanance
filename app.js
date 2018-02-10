@@ -1,12 +1,3 @@
-/*
-    * pegar o json enviado pela request
-    * passar pelo joi para validar
-    * caso validação falhe responde com status code de malformated request
-    * caso de certo insere no mongo
-    * retornar id criado
-    * quando id for igual, alterar (opcional)
-*/
-
 //  create the app
 const express = require('express')
 const app = express()
@@ -15,14 +6,15 @@ const app = express()
 const isProduction = process.env.NODE_ENV === 'production'
 const cors = require('cors')
 const bodyParser = require('body-parser')
-const logger = require('morgan')
 
 app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 if (!isProduction) {
-  app.use(logger('dev'))
+  const expressLogging = require('express-logging')
+  const logger = require('logops')
+  app.use(expressLogging(logger))
 }
 
 //  load models
