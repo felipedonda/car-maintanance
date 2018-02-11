@@ -19,7 +19,7 @@ const joiVehicleSchema = joi.object().keys({
 const vehicleSchema = new mongoose.Schema(joigoose.convert(joiVehicleSchema))
 
 // overriding joigoose schema configuration
-vehicleSchema.add({slug: {type: 'string', unique: true, required: true, index: true}})
+vehicleSchema.add({slug: {type: String, unique: true, required: true, index: true}})
 
 // joi validation method
 vehicleSchema.statics.validate = (obj) => {
