@@ -15,7 +15,7 @@ const joiMaintenanceSchema = joi.object().keys({
 const maintenanceSchema = new mongoose.Schema(joigoose.convert(joiMaintenanceSchema))
 
 // overriding joigoose schema configuration
-maintenanceSchema.add({vehicle_slug: {type: [String], required: true}})
+maintenanceSchema.add({vehicle_slug: {type: [String], required: true, index: true}})
 maintenanceSchema.add({started_at: {type: [Date], required: true}})
 
 // joi validation method
