@@ -18,7 +18,7 @@ describe('maintenance', () => {
 
   const goodMaintenance = {
     _id: '76c6c967-31e4-4ef4-9207-2d7f1fc6405a',
-    status: 'Closed',
+    status: 'Started',
     started_at: '2018-02-10T09:01:32.154Z',
     finished_at: '2018-04-10T09:01:32.154Z'
   }
@@ -61,7 +61,8 @@ describe('maintenance', () => {
       started_at: laterDate,
       finished_at: currentDate
     })
-    expect(Maintenance.validate(badMaintenance).fail).to.equal(true)
+    const maintenance = new Maintenance(badMaintenance)
+    expect(maintenance.validateDates()).to.equal(false)
   })
 
   it('should validate finished_at is null', () => {

@@ -21,19 +21,16 @@ maintenanceSchema.add({started_at: {type: Date, required: true}})
 // joi validation method
 maintenanceSchema.statics.validate = (obj) => {
   const result = joi.validate(obj, joiMaintenanceSchema)
-
-  if (obj.started_at > obj.finished_at) {
-    if (result.error) {
-      result.error.details.push({message: 'Value "started_at" later than "finished_at"'})
-    } else {
-      result.error = {
-        details: [{message: 'Value "started_at" later than "finished_at"'}]
-      }
-    }
-  }
-
   result.fail = result.error !== null
   return result
+}
+
+maintenanceSchema.methods.validateDates = function () {
+  if (this.started_at > this.finished_at) {
+    return false
+  } else {
+    return true
+  }
 }
 
 /*
@@ -51,6 +48,9 @@ maintenanceSchema.virtual('vehicle', {
 maintenanceSchema.pre('validate', function (next) {
   if (!this._id) {
     this._id = guid.create()
+  }
+  if (!this.validateDates()) {
+    next(new Error('Value "started_at" later than "finished_at"'))
   }
   next()
 })

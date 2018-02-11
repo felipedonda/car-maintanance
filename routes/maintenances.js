@@ -30,6 +30,9 @@ router.post('/:vehicle_slug', (req, res) => {
     const maintenance = new Maintenance(Object.assign({}, req.body, {vehicle_slug: vehicleSlug}))
     maintenance.save((err, obj) => {
       if (err) {
+        if (err.message === 'Value "started_at" later than "finished_at"') {
+          return res.status(422).json({ message: 'Invalid maintenance parameters!', error: err.message })
+        }
         if (!isProduction) { console.log(err) }
         return res.status(500).json({ message: 'Error saving maintenance.' })
       }
@@ -110,14 +113,20 @@ router.put('/:vehicle_slug/:id', (req, res) => {
     }
 
     //  finding on db
-    Maintenance.find({_id: id}, (err, maintenance) => {
+    Maintenance.find({_id: id}, null, {limit: 1}, (err, result) => {
       if (err) {
         if (!isProduction) { console.log(err) }
         return res.status(500).json({ message: 'Error getting maintenance.' })
       }
 
-      if (!maintenance) {
+      if (!result.length) {
         return res.status(404).json({ message: 'No such maintenance.' })
+      }
+
+      const maintenance = result[0]
+
+      if (maintenance.status === 'Finished') {
+        return res.status(400).json({ message: 'Status is already finished, no updates are allowed.' })
       }
 
       //  validating
@@ -144,10 +153,13 @@ router.put('/:vehicle_slug/:id', (req, res) => {
       //  saving to db
       maintenance.save((err, obj) => {
         if (err) {
+          if (err.message === 'Value "started_at" later than "finished_at"') {
+            return res.status(422).json({ message: 'Invalid maintenance parameters!', error: err.message })
+          }
           if (!isProduction) { console.log(err) }
           return res.status(500).json({ message: 'Error saving maintenance.' })
         }
-        return res.status(200).json({ message: 'Maintenance saved sucessfully.', id: obj.id, slug: obj.slug })
+        return res.status(200).json({ message: 'Maintenance saved sucessfully.', id: obj.id })
       })
     })
   })
@@ -186,6 +198,56 @@ router.delete('/:vehicle_slug/:id', (req, res) => {
           return res.status(500).json({ message: 'Error deleting maintenance.' })
         }
         return res.status(200).json({ message: 'Maintenance deleted sucessfully.', id: obj.id })
+      })
+    })
+  })
+})
+
+//  # GET | function: close
+router.get('/:vehicle_slug/:id/close', (req, res) => {
+  const vehicleSlug = req.params.vehicle_slug
+  const id = req.params.id
+
+  //  finding on db
+  Vehicle.count({slug: vehicleSlug}, (err, vehicle) => {
+    if (err) {
+      if (!isProduction) { console.log(err) }
+      return res.status(500).json({ message: 'Error getting vehicle.' })
+    }
+
+    if (vehicle === 0) {
+      return res.status(404).json({ message: 'No such vehicle.' })
+    }
+
+    //  finding on db
+    Maintenance.find({_id: id}, null, {limit: 1}, (err, result) => {
+      if (err) {
+        if (!isProduction) { console.log(err) }
+        return res.status(500).json({ message: 'Error getting maintenance.' })
+      }
+
+      if (!result.length) {
+        return res.status(404).json({ message: 'No such maintenance.' })
+      }
+
+      const maintenance = result[0]
+
+      if (maintenance.status === 'Finished') {
+        return res.status(400).json({ message: 'Status is set to "finished", no updates are allowed.' })
+      }
+
+      maintenance.status = 'Finished'
+
+      //  saving to db
+      maintenance.save((err, obj) => {
+        if (err) {
+          if (err.message === 'Value "started_at" later than "finished_at"') {
+            return res.status(422).json({ message: 'Invalid maintenance parameters!', error: err.message })
+          }
+          if (!isProduction) { console.log(err) }
+          return res.status(500).json({ message: 'Error saving maintenance.' })
+        }
+        return res.status(200).json({ message: 'Maintenance finished sucessfully.', id: obj.id })
       })
     })
   })
