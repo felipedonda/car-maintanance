@@ -42,17 +42,19 @@ router.get('/:id', (req, res) => {
   const id = req.params.id
 
   //  finding on db
-  Vehicle.findOne({_id: id}, (err, obj) => {
+  Vehicle.find({_id: id}, null, { limit: 1 }, (err, result) => {
     if (err) {
       if (!isProduction) { console.log(err) }
       return res.status(500).json({ message: 'Error getting vehicle.' })
     }
 
-    if (!obj) {
+    if (!result.length) {
       return res.status(404).json({ message: 'No such vehicle.' })
     }
 
-    return res.json(obj)
+    const vehicle = result[0]
+
+    return res.json(vehicle)
   })
 })
 

@@ -84,14 +84,21 @@ router.get('/:vehicle_slug/:id', (req, res) => {
     }
 
     //  finding on db
-    Maintenance.findOne({
+    Maintenance.find({
       $and: [ {vehicle_slug: vehicleSlug}, {_id: id} ]
-    }, (err, list) => {
+    }, null, {limit: 1}, (err, result) => {
       if (err) {
         if (!isProduction) { console.log(err) }
         return res.status(500).json({ message: 'Error getting maintenances.' })
       }
-      return res.json(list)
+
+      if (!result.length) {
+        return res.status(404).json({ message: 'No such maintenance.' })
+      }
+
+      const maintenance = result[0]
+
+      return res.json(maintenance)
     })
   })
 })
@@ -182,14 +189,16 @@ router.delete('/:vehicle_slug/:id', (req, res) => {
     }
 
     //  finding on db
-    Maintenance.findOne({_id: id}, (err, maintenance) => {
+    Maintenance.find({_id: id}, null, { limit: 1 }, (err, result) => {
       if (err) {
         if (!isProduction) { console.log(err) }
         return res.status(500).json({ message: 'Error getting maintenance.' })
       }
-      if (!maintenance) {
+      if (!result.length) {
         return res.status(404).json({ message: 'No such maintenance.' })
       }
+
+      const maintenance = result[0]
 
       // removing from db
       maintenance.remove((err, obj) => {

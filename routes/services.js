@@ -81,14 +81,21 @@ router.get('/:vehicle_slug/services/:id', (req, res) => {
     }
 
     //  finding on db
-    Service.findOne({
+    Service.find({
       $and: [ {vehicle_slug: vehicleSlug}, {_id: id} ]
-    }, (err, list) => {
+    }, null, { limit: 1 }, (err, result) => {
       if (err) {
         if (!isProduction) { console.log(err) }
-        return res.status(500).json({ message: 'Error getting services.' })
+        return res.status(500).json({ message: 'Error getting service.' })
       }
-      return res.json(list)
+
+      if (!result.length) {
+        return res.status(404).json({ message: 'No such service.' })
+      }
+
+      const service = result[0]
+
+      return res.json(service)
     })
   })
 })
