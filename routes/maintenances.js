@@ -67,7 +67,7 @@ router.get('/:vehicle_slug', (req, res) => {
   })
 })
 
-//  # GET
+//  # GET/ID
 router.get('/:vehicle_slug/:id', (req, res) => {
   const vehicleSlug = req.params.vehicle_slug
   const id = req.params.id
@@ -125,8 +125,8 @@ router.put('/:vehicle_slug/:id', (req, res) => {
 
       const maintenance = result[0]
 
-      if (maintenance.status === 'Finished') {
-        return res.status(400).json({ message: 'Status is already finished, no updates are allowed.' })
+      if (maintenance.isFinished()) {
+        return res.status(400).json({ message: 'Maintenance status is already finished, no updates are allowed.' })
       }
 
       //  validating
@@ -203,8 +203,8 @@ router.delete('/:vehicle_slug/:id', (req, res) => {
   })
 })
 
-//  # GET | function: close
-router.get('/:vehicle_slug/:id/close', (req, res) => {
+//  # GET | function: finish
+router.get('/:vehicle_slug/:id/finish', (req, res) => {
   const vehicleSlug = req.params.vehicle_slug
   const id = req.params.id
 
@@ -232,8 +232,8 @@ router.get('/:vehicle_slug/:id/close', (req, res) => {
 
       const maintenance = result[0]
 
-      if (maintenance.status === 'Finished') {
-        return res.status(400).json({ message: 'Status is set to "finished", no updates are allowed.' })
+      if (maintenance.isFinished()) {
+        return res.status(400).json({ message: 'Maintenance status is already finished, no updates are allowed.' })
       }
 
       maintenance.status = 'Finished'
