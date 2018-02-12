@@ -19,13 +19,13 @@ describe('service', () => {
     description: 'lorem ipsum'
   }
 
-  it('should validate object is right', () => {
+  it('should validate if the object is right', () => {
     expect(Service.validate(goodService).fail).to.equal(false)
   })
 
   // ### ID
 
-  it('should validate id is invalid', () => {
+  it('should validate if the id is invalid', () => {
     const badService = Object.assign({}, goodService, {
       id: 2
     })
@@ -34,14 +34,14 @@ describe('service', () => {
 
   // ### NAME
 
-  it('should validate name is invalid', () => {
+  it('should validate if the name is invalid', () => {
     const badService = Object.assign({}, goodService, {
       name: 'fo'
     })
     expect(Service.validate(badService).fail).to.equal(true)
   })
 
-  it('should validate name is null', () => {
+  it('should validate if the name is null', () => {
     const badService = Object.assign({}, goodService, {
       name: null
     })
@@ -50,14 +50,14 @@ describe('service', () => {
 
   // ### DESCRIPTION
 
-  it('should validate description is invalid', () => {
+  it('should validate if the description is invalid', () => {
     const badService = Object.assign({}, goodService, {
       description: bigString256
     })
     expect(Service.validate(badService).fail).to.equal(true)
   })
 
-  it('should allow description is null', () => {
+  it('should not validate if the description is null', () => {
     const badService = Object.assign({}, goodService, {
       description: null
     })
@@ -66,7 +66,7 @@ describe('service', () => {
 
   // ### VEHICLE
 
-  it('should validate vehicle_slug is null', () => {
+  it('should validate if the vehicle_slug is null', () => {
     const badService = Object.assign({}, goodService, {
       vehicle_slug: null
     })

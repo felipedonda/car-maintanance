@@ -29,13 +29,13 @@ describe('vehicles', () => {
   }
   //  Disclaimer: vin randomly generated, any resemblance is mere coincidence
 
-  it('should validate object is right', () => {
+  it('should validate if the object is right', () => {
     expect(Vehicle.validate(goodVehicle).fail).to.equal(false)
   })
 
   // ### ID
 
-  it('should validate id is invalid', () => {
+  it('should validate if the id is invalid', () => {
     const badVehicle = Object.assign({}, goodVehicle, {
       id: 2
     })
@@ -44,14 +44,14 @@ describe('vehicles', () => {
 
   // ### NAME
 
-  it('should validate name is invalid', () => {
+  it('should validate if the name is invalid', () => {
     const badVehicle = Object.assign({}, goodVehicle, {
       name: 'fo'
     })
     expect(Vehicle.validate(badVehicle).fail).to.equal(true)
   })
 
-  it('should validate name is null', () => {
+  it('should validate if the name is null', () => {
     const badVehicle = Object.assign({}, goodVehicle, {
       name: null
     })
@@ -60,14 +60,14 @@ describe('vehicles', () => {
 
   // ### MAKE
 
-  it('should validate make is invalid', () => {
+  it('should validate if the make is invalid', () => {
     const badVehicle = Object.assign({}, goodVehicle, {
       make: bigString256
     })
     expect(Vehicle.validate(badVehicle).fail).to.equal(true)
   })
 
-  it('should validate make is null', () => {
+  it('should validate if the make is null', () => {
     const badVehicle = Object.assign({}, goodVehicle, {
       make: null
     })
@@ -76,14 +76,14 @@ describe('vehicles', () => {
 
   // ### MODEL
 
-  it('should validate model is invalid', () => {
+  it('should validate if the model is invalid', () => {
     const badVehicle = Object.assign({}, goodVehicle, {
       model: bigString256
     })
     expect(Vehicle.validate(badVehicle).fail).to.equal(true)
   })
 
-  it('should validate model is null', () => {
+  it('should validate if the model is null', () => {
     const badVehicle = Object.assign({}, goodVehicle, {
       model: null
     })
@@ -92,7 +92,7 @@ describe('vehicles', () => {
 
   // ### YEAR
 
-  it('should validate year is null', () => {
+  it('should validate if the year is null', () => {
     const badVehicle = Object.assign({}, goodVehicle, {
       year: null
     })
@@ -101,14 +101,14 @@ describe('vehicles', () => {
 
   // ### VIN
 
-  it('should validate vin is invalid', () => {
+  it('should validate if the vin is invalid', () => {
     const badVehicle = Object.assign({}, goodVehicle, {
       vin: bigString256
     })
     expect(Vehicle.validate(badVehicle).fail).to.equal(true)
   })
 
-  it('should validate vin is null', () => {
+  it('should validate if the vin is null', () => {
     const badVehicle = Object.assign({}, goodVehicle, {
       vin: null
     })

@@ -23,13 +23,13 @@ describe('maintenance', () => {
     finished_at: '2018-04-10T09:01:32.154Z'
   }
 
-  it('should validate object is right', () => {
+  it('should validate when Maintenace is all good', () => {
     expect(Maintenance.validate(goodMaintenance).fail).to.equal(false)
   })
 
   // ### ID
 
-  it('should validate id is invalid', () => {
+  it('should validate if the id is invalid', () => {
     const badMaintenance = Object.assign({}, goodMaintenance, {
       id: 2
     })
@@ -38,16 +38,29 @@ describe('maintenance', () => {
 
   // ### STATUS
 
-  it('should validate status is null', () => {
+  it('should validate if the status is null', () => {
     const badMaintenance = Object.assign({}, goodMaintenance, {
       status: null
     })
     expect(Maintenance.validate(badMaintenance).fail).to.equal(true)
   })
 
+  it('should validate if the status is finished', () => {
+    const badMaintenance = Object.assign({}, goodMaintenance, {
+      status: 'FiNiShEd'
+    })
+    const maintenance = new Maintenance(badMaintenance)
+    expect(maintenance.isFinished()).to.equal(true)
+  })
+
+  it('should not validate if the status is finished', () => {
+    const maintenance = new Maintenance(goodMaintenance)
+    expect(maintenance.isFinished()).to.equal(false)
+  })
+
   // ### STARTED AT
 
-  it('should validate started_at is null', () => {
+  it('should validate if the started_at is null', () => {
     const badMaintenance = Object.assign({}, goodMaintenance, {
       started_at: null
     })
@@ -56,7 +69,7 @@ describe('maintenance', () => {
 
   // ### FINISHED AT
 
-  it('should validate finished_at is later than started_at', () => {
+  it('should validate if the finished_at is later than started_at', () => {
     const badMaintenance = Object.assign({}, goodMaintenance, {
       started_at: laterDate,
       finished_at: currentDate
@@ -65,7 +78,16 @@ describe('maintenance', () => {
     expect(maintenance.validateDates()).to.equal(false)
   })
 
-  it('should validate finished_at is null', () => {
+  it('should not validate if the finished_at is ealier than started_at', () => {
+    const badMaintenance = Object.assign({}, goodMaintenance, {
+      started_at: currentDate,
+      finished_at: laterDate
+    })
+    const maintenance = new Maintenance(badMaintenance)
+    expect(maintenance.validateDates()).to.equal(true)
+  })
+
+  it('should validate if the finished_at is null', () => {
     const badMaintenance = Object.assign({}, goodMaintenance, {
       finished_at: null
     })
@@ -74,7 +96,7 @@ describe('maintenance', () => {
 
   // ### VEHICLE
 
-  it('should validate vehicle_slug is null', () => {
+  it('should validate if the vehicle_slug is null', () => {
     const badMaintenance = Object.assign({}, goodMaintenance, {
       vehicle_slug: null
     })
