@@ -33,6 +33,14 @@ maintenanceSchema.methods.validateDates = function () {
   }
 }
 
+maintenanceSchema.methods.isFinished = function () {
+  if (this.status.toLowerCase() === 'finished') {
+    return true
+  } else {
+    return false
+  }
+}
+
 /*
 // config relationships and custom 'foreign keys'
 maintenanceSchema.virtual('vehicle', {
