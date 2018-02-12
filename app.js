@@ -37,10 +37,16 @@ app.use('/', routes)
 //  connect to the database
 const mongoose = require('mongoose')
 
-if (isProduction) {
+//  Connecting to database
+if (process.env.MONGODB_URI) {
+  console.log('Connecting to database ' + process.env.MONGODB_URI)
   mongoose.connect(process.env.MONGODB_URI)
 } else {
+  console.log('Connecting to database mongodb://localhost/car-maintenance-db')
   mongoose.connect('mongodb://localhost/car-maintenance-db')
+}
+
+if (!isProduction) {
   mongoose.set('debug', true)
 }
 
