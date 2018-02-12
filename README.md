@@ -1,7 +1,7 @@
-## Vehicle Maintenance API Challenge
+# Vehicle Maintenance API Challenge
 [![Build Status](https://travis-ci.org/felipedonda/car-maintanance.svg?branch=master)](https://travis-ci.org/felipedonda/car-maintanance) [![Run in Postman](https://img.shields.io/badge/postman-collection-orange.svg)](https://app.getpostman.com/run-collection/b5f104ea08c83120f02d)
 
-### Technologies
+## Technologies
 
 * node.js: 9.5.0
 * travis ci
